@@ -11,7 +11,15 @@ import { ProductosService } from './services/productos.service';
 
 @Module({
   imports: [],
-  controllers: [AppController, FabricantesController, ProductosController, PedidosController, OperadoresController, CompradoresController, CategoriasController],
+  controllers: [
+    AppController,
+    FabricantesController,
+    ProductosController,
+    PedidosController,
+    OperadoresController,
+    CompradoresController,
+    CategoriasController,
+  ],
   providers: [AppService, ProductosService],
 })
 export class AppModule {}
