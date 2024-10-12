@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
+import { CreateOperadorDTO, UpdateOperadorDTO } from 'src/dtos/operadores.dto';
 import { OperadoresService } from 'src/services/operadores.service';
 
 @Controller('operadores')
@@ -25,14 +26,14 @@ export class OperadoresController {
   }
 
   @Post()
-  create(@Body() payload: any) {
+  create(@Body() payload: CreateOperadorDTO) {
     return this.operadoresService.create(payload);
   }
 
   @Put(':id')
   updateOperador(
     @Param('id', ParseIntPipe) idOperador: number,
-    @Body() body: any,
+    @Body() body: UpdateOperadorDTO,
   ): any {
     return this.operadoresService.update(idOperador, body);
   }

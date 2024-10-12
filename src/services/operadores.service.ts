@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateOperadorDTO, UpdateOperadorDTO } from 'src/dtos/operadores.dto';
 import { Operador } from 'src/entities/operador.entiy';
 
 @Injectable()
@@ -31,7 +32,7 @@ export class OperadoresService {
     return this.operadores;
   }
 
-  create(payload: any) {
+  create(payload: CreateOperadorDTO) {
     this.idCont++;
     const newProduct = {
       id: this.idCont,
@@ -41,7 +42,7 @@ export class OperadoresService {
     return newProduct;
   }
 
-  update(id: number, payload: any) {
+  update(id: number, payload: UpdateOperadorDTO) {
     const index = this.operadores.findIndex((operador) => operador.id === id);
     if (index === -1) {
       throw new Error(`El operador con id: #${id} no existe`);

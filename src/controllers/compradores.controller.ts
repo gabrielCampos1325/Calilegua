@@ -8,6 +8,10 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
+import {
+  CreateCompradorDTO,
+  UpdateCompradorDTO,
+} from 'src/dtos/compradores.dto';
 import { CompradoresService } from 'src/services/compradores.service';
 
 @Controller('compradores')
@@ -25,14 +29,14 @@ export class CompradoresController {
   }
 
   @Post()
-  create(@Body() payload: any) {
+  create(@Body() payload: CreateCompradorDTO) {
     return this.compradoresService.create(payload);
   }
 
   @Put(':id')
   updateComprador(
     @Param('id', ParseIntPipe) idComprador: number,
-    @Body() body: any,
+    @Body() body: UpdateCompradorDTO,
   ): any {
     return this.compradoresService.update(idComprador, body);
   }

@@ -8,6 +8,10 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
+import {
+  CreateCategoriaDTO,
+  UpdateCategoriaDTO,
+} from 'src/dtos/categorias.dto';
 import { CategoriasService } from 'src/services/categorias.service';
 
 @Controller('categorias')
@@ -25,14 +29,14 @@ export class CategoriasController {
   }
 
   @Post()
-  create(@Body() payload: any) {
+  create(@Body() payload: CreateCategoriaDTO) {
     return this.categoriasService.create(payload);
   }
 
   @Put(':id')
   updateCategoria(
     @Param('id', ParseIntPipe) idCategoria: number,
-    @Body() body: any,
+    @Body() body: UpdateCategoriaDTO,
   ): any {
     return this.categoriasService.update(idCategoria, body);
   }

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateProductDTO, UpdateProductDTO } from 'src/dtos/products.dto';
 import { Producto } from 'src/entities/producto.entity';
 
 @Injectable()
@@ -37,7 +38,7 @@ export class ProductosService {
     return this.productos;
   }
 
-  create(payload: any) {
+  create(payload: CreateProductDTO) {
     this.idCont++;
     const newProduct = {
       id: this.idCont,
@@ -47,7 +48,7 @@ export class ProductosService {
     return newProduct;
   }
 
-  update(id: number, payload: any) {
+  update(id: number, payload: UpdateProductDTO) {
     const index = this.productos.findIndex((producto) => producto.id === id);
     if (index === -1) {
       throw new Error(`El producto con id: #${id} no existe`);

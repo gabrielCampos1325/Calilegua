@@ -1,4 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import {
+  CreateCategoriaDTO,
+  UpdateCategoriaDTO,
+} from 'src/dtos/categorias.dto';
 import { categoria } from 'src/entities/categoria.entity';
 
 @Injectable()
@@ -29,7 +33,7 @@ export class CategoriasService {
     return this.categorias;
   }
 
-  create(payload: any) {
+  create(payload: CreateCategoriaDTO) {
     this.idCont++;
     const newProduct = {
       id: this.idCont,
@@ -39,7 +43,7 @@ export class CategoriasService {
     return newProduct;
   }
 
-  update(id: number, payload: any) {
+  update(id: number, payload: UpdateCategoriaDTO) {
     const index = this.categorias.findIndex((categoria) => categoria.id === id);
     if (index === -1) {
       throw new Error(`El categoria con id: #${id} no existe`);

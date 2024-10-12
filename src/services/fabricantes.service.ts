@@ -1,4 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import {
+  CreateFabricanteDTO,
+  UpdateFabricanteDTO,
+} from 'src/dtos/fabricantes.dto';
 import { Fabricante } from 'src/entities/fabricante.entity';
 
 @Injectable()
@@ -31,7 +35,7 @@ export class FabricantesService {
     return this.fabricante;
   }
 
-  create(payload: any) {
+  create(payload: CreateFabricanteDTO) {
     this.idCont++;
     const newProduct = {
       id: this.idCont,
@@ -41,7 +45,7 @@ export class FabricantesService {
     return newProduct;
   }
 
-  update(id: number, payload: any) {
+  update(id: number, payload: UpdateFabricanteDTO) {
     const index = this.fabricante.findIndex(
       (fabricante) => fabricante.id === id,
     );
