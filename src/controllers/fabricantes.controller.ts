@@ -6,45 +6,43 @@ import {
   Post,
   Put,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
+import {
+  CreateFabricanteDTO,
+  UpdateFabricanteDTO,
+} from 'src/dtos/fabricantes.dto';
+import { FabricantesService } from 'src/services/fabricantes.service';
 
 @Controller('fabricantes')
 export class FabricantesController {
-  constructor() {} // llenarlo con el servicio de fabricantes
+  constructor(private fabricantesService: FabricantesService) {}
 
   @Get(':id')
-  getFabricanteById(@Param('id') id: string) {
-    return `Fabricante con ID ${id}`;
+  getFabricanteById(@Param('id', ParseIntPipe) id: number) {
+    return this.fabricantesService.findOne(id);
   }
 
   @Get()
   findAll() {
-    //return this.productsService.findAll();
+    return this.fabricantesService.findAll();
   }
 
   @Post()
-  create(@Body() payload: any) {
-    return {
-      message: 'Se creo un nuevo fabricante',
-      payload,
-    };
+  create(@Body() payload: CreateFabricanteDTO) {
+    return this.fabricantesService.create(payload);
   }
 
   @Put(':id')
-  updateFabricante(@Param('id') idFabricante: string, @Body() body: any): any {
-    return {
-      idFabricante: idFabricante,
-      nombre: body.nombre,
-      precio: body.precio,
-    };
+  updateFabricante(
+    @Param('id', ParseIntPipe) idFabricante: number,
+    @Body() body: UpdateFabricanteDTO,
+  ): any {
+    return this.fabricantesService.update(idFabricante, body);
   }
 
   @Delete(':id')
-  deleteFabricante(@Param('id') idFabricante: string): any {
-    return {
-      idFabricante: idFabricante,
-      delete: true,
-      count: 1,
-    };
+  deleteFabricante(@Param('id', ParseIntPipe) idFabricante: number): any {
+    return this.fabricantesService.delete(idFabricante);
   }
 }

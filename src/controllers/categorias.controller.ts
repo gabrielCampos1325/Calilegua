@@ -6,45 +6,43 @@ import {
   Post,
   Put,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
+import {
+  CreateCategoriaDTO,
+  UpdateCategoriaDTO,
+} from 'src/dtos/categorias.dto';
+import { CategoriasService } from 'src/services/categorias.service';
 
 @Controller('categorias')
 export class CategoriasController {
-  constructor() {} // llenarlo con el servicio de categorias
+  constructor(private categoriasService: CategoriasService) {}
 
   @Get(':id')
-  getCategoriaById(@Param('id') id: string) {
-    return `Categoria con ID ${id}`;
+  getCategoriaById(@Param('id', ParseIntPipe) id: number) {
+    return this.categoriasService.findOne(id);
   }
 
   @Get()
   findAll() {
-    //return this.productsService.findAll();
+    return this.categoriasService.findAll();
   }
 
   @Post()
-  create(@Body() payload: any) {
-    return {
-      message: 'Se creo una nueva categoria',
-      payload,
-    };
+  create(@Body() payload: CreateCategoriaDTO) {
+    return this.categoriasService.create(payload);
   }
 
   @Put(':id')
-  updateCategoria(@Param('id') idCategoria: string, @Body() body: any): any {
-    return {
-      idCategoria: idCategoria,
-      nombre: body.nombre,
-      precio: body.precio,
-    };
+  updateCategoria(
+    @Param('id', ParseIntPipe) idCategoria: number,
+    @Body() body: UpdateCategoriaDTO,
+  ): any {
+    return this.categoriasService.update(idCategoria, body);
   }
 
   @Delete(':id')
-  deleteCategoria(@Param('id') idCategoria: string): any {
-    return {
-      idCategoria: idCategoria,
-      delete: true,
-      count: 1,
-    };
+  deleteCategoria(@Param('id', ParseIntPipe) idCategoria: number): any {
+    return this.categoriasService.delete(idCategoria);
   }
 }

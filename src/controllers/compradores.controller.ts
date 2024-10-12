@@ -6,45 +6,43 @@ import {
   Post,
   Put,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
+import {
+  CreateCompradorDTO,
+  UpdateCompradorDTO,
+} from 'src/dtos/compradores.dto';
+import { CompradoresService } from 'src/services/compradores.service';
 
 @Controller('compradores')
 export class CompradoresController {
-  constructor() {} // llenarlo con el servicio de comprador
+  constructor(private compradoresService: CompradoresService) {}
 
   @Get(':id')
-  getCompradorById(@Param('id') id: string) {
-    return `Comprador con ID ${id}`;
+  getCompradorById(@Param('id', ParseIntPipe) id: number) {
+    return this.compradoresService.findOne(id);
   }
 
   @Get()
   findAll() {
-    //return this.productsService.findAll();
+    return this.compradoresService.findAll();
   }
 
   @Post()
-  create(@Body() payload: any) {
-    return {
-      message: 'Se creo un nuevo comprador',
-      payload,
-    };
+  create(@Body() payload: CreateCompradorDTO) {
+    return this.compradoresService.create(payload);
   }
 
   @Put(':id')
-  updateComprador(@Param('id') idComprador: string, @Body() body: any): any {
-    return {
-      idComprador: idComprador,
-      nombre: body.nombre,
-      precio: body.precio,
-    };
+  updateComprador(
+    @Param('id', ParseIntPipe) idComprador: number,
+    @Body() body: UpdateCompradorDTO,
+  ): any {
+    return this.compradoresService.update(idComprador, body);
   }
 
   @Delete(':id')
-  deleteComprador(@Param('id') idComprador: string): any {
-    return {
-      idComprador: idComprador,
-      delete: true,
-      count: 1,
-    };
+  deleteComprador(@Param('id', ParseIntPipe) idComprador: number): any {
+    return this.compradoresService.delete(idComprador);
   }
 }

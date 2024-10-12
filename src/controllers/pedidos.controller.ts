@@ -6,45 +6,40 @@ import {
   Param,
   Post,
   Put,
+  ParseIntPipe,
 } from '@nestjs/common';
+import { CreatePedidoDTO, UpdatePedidoDTO } from 'src/dtos/pedidos.dto';
+import { PedidosService } from 'src/services/pedidos.service';
 
 @Controller('pedidos')
 export class PedidosController {
-  constructor() {} // llenarlo con el servicio de pedidos
+  constructor(private pedidosService: PedidosService) {}
 
   @Get(':id')
-  getPedidosById(@Param('id') id: string) {
-    return `Pedido con ID ${id}`;
+  getPedidosById(@Param('id', ParseIntPipe) id: number) {
+    return this.pedidosService.findOne(id);
   }
 
   @Get()
   findAll() {
-    //return this.productsService.findAll();
+    return this.pedidosService.findAll();
   }
 
   @Post()
-  create(@Body() payload: any) {
-    return {
-      message: 'Se creo un nuevo pedido',
-      payload,
-    };
+  create(@Body() payload: CreatePedidoDTO) {
+    return this.pedidosService.create(payload);
   }
 
   @Put(':id')
-  updatePedido(@Param('id') idPedido: string, @Body() body: any): any {
-    return {
-      idPedido: idPedido,
-      nombre: body.nombre,
-      precio: body.precio,
-    };
+  updatePedido(
+    @Param('id', ParseIntPipe) idPedido: number,
+    @Body() body: UpdatePedidoDTO,
+  ): any {
+    return this.pedidosService.update(idPedido, body);
   }
 
   @Delete(':id')
-  deletePedido(@Param('id') idPedido: string): any {
-    return {
-      idPedido: idPedido,
-      delete: true,
-      count: 1,
-    };
+  deletePedido(@Param('id', ParseIntPipe) idPedido: number): any {
+    return this.pedidosService.delete(idPedido);
   }
 }
