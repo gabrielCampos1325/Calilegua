@@ -13,17 +13,17 @@ import { ProductosService } from 'src/services/productos.service';
 export class ProductosController {
   constructor(private productsService: ProductosService) {}
 
-  @Get('obtener/:id')
+  @Get(':id')
   getUserById(@Param('id') id: string) {
     return `Producto con ID ${id}`;
   }
 
-  @Get('listar')
+  @Get()
   findAll() {
     return this.productsService.findAll();
   }
 
-  @Post('crear')
+  @Post()
   create(@Body() payload: any) {
     return {
       message: 'Se creo un nuevo producto',
@@ -31,11 +31,8 @@ export class ProductosController {
     };
   }
 
-  @Put('modificar/:idProduct')
-  updateProducto(
-    @Param('idProduct') idProduct: string,
-    @Body() body: any,
-  ): any {
+  @Put(':id')
+  updateProducto(@Param('id') idProduct: string, @Body() body: any): any {
     return {
       idProduct: idProduct,
       nombre: body.nombre,
@@ -43,8 +40,8 @@ export class ProductosController {
     };
   }
 
-  @Delete(':idProduct')
-  deleteProducto(@Param('idProduct') idProduct: string): any {
+  @Delete(':id')
+  deleteProducto(@Param('id') idProduct: string): any {
     return {
       idProduct: idProduct,
       delete: true,
