@@ -6,6 +6,7 @@ import {
   Post,
   Put,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CompradoresService } from 'src/services/compradores.service';
 
@@ -14,8 +15,8 @@ export class CompradoresController {
   constructor(private compradoresService: CompradoresService) {}
 
   @Get(':id')
-  getCompradorById(@Param('id') id: string) {
-    return this.compradoresService.findOne(+id);
+  getCompradorById(@Param('id', ParseIntPipe) id: number) {
+    return this.compradoresService.findOne(id);
   }
 
   @Get()
@@ -29,12 +30,15 @@ export class CompradoresController {
   }
 
   @Put(':id')
-  updateComprador(@Param('id') idComprador: string, @Body() body: any): any {
-    return this.compradoresService.update(+idComprador, body);
+  updateComprador(
+    @Param('id', ParseIntPipe) idComprador: number,
+    @Body() body: any,
+  ): any {
+    return this.compradoresService.update(idComprador, body);
   }
 
   @Delete(':id')
-  deleteComprador(@Param('id') idComprador: string): any {
-    return this.compradoresService.delete(+idComprador);
+  deleteComprador(@Param('id', ParseIntPipe) idComprador: number): any {
+    return this.compradoresService.delete(idComprador);
   }
 }

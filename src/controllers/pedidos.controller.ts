@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PedidosService } from 'src/services/pedidos.service';
 
@@ -14,8 +15,8 @@ export class PedidosController {
   constructor(private pedidosService: PedidosService) {}
 
   @Get(':id')
-  getPedidosById(@Param('id') id: string) {
-    return this.pedidosService.findOne(+id);
+  getPedidosById(@Param('id', ParseIntPipe) id: number) {
+    return this.pedidosService.findOne(id);
   }
 
   @Get()
@@ -29,12 +30,15 @@ export class PedidosController {
   }
 
   @Put(':id')
-  updatePedido(@Param('id') idPedido: string, @Body() body: any): any {
-    return this.pedidosService.update(+idPedido, body);
+  updatePedido(
+    @Param('id', ParseIntPipe) idPedido: number,
+    @Body() body: any,
+  ): any {
+    return this.pedidosService.update(idPedido, body);
   }
 
   @Delete(':id')
-  deletePedido(@Param('id') idPedido: string): any {
-    return this.pedidosService.delete(+idPedido);
+  deletePedido(@Param('id', ParseIntPipe) idPedido: number): any {
+    return this.pedidosService.delete(idPedido);
   }
 }

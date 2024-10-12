@@ -6,6 +6,7 @@ import {
   Post,
   Put,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { OperadoresService } from 'src/services/operadores.service';
 
@@ -14,8 +15,8 @@ export class OperadoresController {
   constructor(private operadoresService: OperadoresService) {}
 
   @Get(':id')
-  getUserById(@Param('id') id: string) {
-    return this.operadoresService.findOne(+id);
+  getUserById(@Param('id', ParseIntPipe) id: number) {
+    return this.operadoresService.findOne(id);
   }
 
   @Get()
@@ -29,12 +30,15 @@ export class OperadoresController {
   }
 
   @Put(':id')
-  updateOperador(@Param('id') idOperador: string, @Body() body: any): any {
-    return this.operadoresService.update(+idOperador, body);
+  updateOperador(
+    @Param('id', ParseIntPipe) idOperador: number,
+    @Body() body: any,
+  ): any {
+    return this.operadoresService.update(idOperador, body);
   }
 
   @Delete(':id')
-  deleteOperador(@Param('id') idOperador: string): any {
-    return this.operadoresService.delete(+idOperador);
+  deleteOperador(@Param('id', ParseIntPipe) idOperador: number): any {
+    return this.operadoresService.delete(idOperador);
   }
 }
