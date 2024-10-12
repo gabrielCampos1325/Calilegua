@@ -7,44 +7,34 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
+import { CompradoresService } from 'src/services/compradores.service';
 
 @Controller('compradores')
 export class CompradoresController {
-  constructor() {} // llenarlo con el servicio de comprador
+  constructor(private compradoresService: CompradoresService) {}
 
   @Get(':id')
   getCompradorById(@Param('id') id: string) {
-    return `Comprador con ID ${id}`;
+    return this.compradoresService.findOne(+id);
   }
 
   @Get()
   findAll() {
-    //return this.productsService.findAll();
+    return this.compradoresService.findAll();
   }
 
   @Post()
   create(@Body() payload: any) {
-    return {
-      message: 'Se creo un nuevo comprador',
-      payload,
-    };
+    return this.compradoresService.create(payload);
   }
 
   @Put(':id')
   updateComprador(@Param('id') idComprador: string, @Body() body: any): any {
-    return {
-      idComprador: idComprador,
-      nombre: body.nombre,
-      precio: body.precio,
-    };
+    return this.compradoresService.update(+idComprador, body);
   }
 
   @Delete(':id')
   deleteComprador(@Param('id') idComprador: string): any {
-    return {
-      idComprador: idComprador,
-      delete: true,
-      count: 1,
-    };
+    return this.compradoresService.delete(+idComprador);
   }
 }

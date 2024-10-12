@@ -7,44 +7,34 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { PedidosService } from 'src/services/pedidos.service';
 
 @Controller('pedidos')
 export class PedidosController {
-  constructor() {} // llenarlo con el servicio de pedidos
+  constructor(private pedidosService: PedidosService) {}
 
   @Get(':id')
   getPedidosById(@Param('id') id: string) {
-    return `Pedido con ID ${id}`;
+    return this.pedidosService.findOne(+id);
   }
 
   @Get()
   findAll() {
-    //return this.productsService.findAll();
+    return this.pedidosService.findAll();
   }
 
   @Post()
   create(@Body() payload: any) {
-    return {
-      message: 'Se creo un nuevo pedido',
-      payload,
-    };
+    return this.pedidosService.create(payload);
   }
 
   @Put(':id')
   updatePedido(@Param('id') idPedido: string, @Body() body: any): any {
-    return {
-      idPedido: idPedido,
-      nombre: body.nombre,
-      precio: body.precio,
-    };
+    return this.pedidosService.update(+idPedido, body);
   }
 
   @Delete(':id')
   deletePedido(@Param('id') idPedido: string): any {
-    return {
-      idPedido: idPedido,
-      delete: true,
-      count: 1,
-    };
+    return this.pedidosService.delete(+idPedido);
   }
 }

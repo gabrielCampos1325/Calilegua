@@ -7,44 +7,34 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
+import { CategoriasService } from 'src/services/categorias.service';
 
 @Controller('categorias')
 export class CategoriasController {
-  constructor() {} // llenarlo con el servicio de categorias
+  constructor(private categoriasService: CategoriasService) {}
 
   @Get(':id')
   getCategoriaById(@Param('id') id: string) {
-    return `Categoria con ID ${id}`;
+    return this.categoriasService.findOne(+id);
   }
 
   @Get()
   findAll() {
-    //return this.productsService.findAll();
+    return this.categoriasService.findAll();
   }
 
   @Post()
   create(@Body() payload: any) {
-    return {
-      message: 'Se creo una nueva categoria',
-      payload,
-    };
+    return this.categoriasService.create(payload);
   }
 
   @Put(':id')
   updateCategoria(@Param('id') idCategoria: string, @Body() body: any): any {
-    return {
-      idCategoria: idCategoria,
-      nombre: body.nombre,
-      precio: body.precio,
-    };
+    return this.categoriasService.update(+idCategoria, body);
   }
 
   @Delete(':id')
   deleteCategoria(@Param('id') idCategoria: string): any {
-    return {
-      idCategoria: idCategoria,
-      delete: true,
-      count: 1,
-    };
+    return this.categoriasService.delete(+idCategoria);
   }
 }

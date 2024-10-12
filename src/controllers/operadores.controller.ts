@@ -7,44 +7,34 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
+import { OperadoresService } from 'src/services/operadores.service';
 
 @Controller('operadores')
 export class OperadoresController {
-  constructor() {} // llenarlo con el servicio de operadores
+  constructor(private operadoresService: OperadoresService) {}
 
   @Get(':id')
   getUserById(@Param('id') id: string) {
-    return `Operador con ID ${id}`;
+    return this.operadoresService.findOne(+id);
   }
 
   @Get()
   findAll() {
-    //return this.productsService.findAll();
+    return this.operadoresService.findAll();
   }
 
   @Post()
   create(@Body() payload: any) {
-    return {
-      message: 'Se creo un nuevo operador',
-      payload,
-    };
+    return this.operadoresService.create(payload);
   }
 
   @Put(':id')
   updateOperador(@Param('id') idOperador: string, @Body() body: any): any {
-    return {
-      idOperador: idOperador,
-      nombre: body.nombre,
-      precio: body.precio,
-    };
+    return this.operadoresService.update(+idOperador, body);
   }
 
   @Delete(':id')
   deleteOperador(@Param('id') idOperador: string): any {
-    return {
-      idOperador: idOperador,
-      delete: true,
-      count: 1,
-    };
+    return this.operadoresService.delete(+idOperador);
   }
 }
