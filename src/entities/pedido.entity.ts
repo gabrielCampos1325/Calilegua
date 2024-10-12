@@ -1,7 +1,8 @@
+import { Operador } from './operador.entiy';
 import { Producto } from './producto.entity';
 
 export class Pedido {
-  id: number;
-  clienteId: number;
-  productos: Producto[];
+  date: Date;
+  operador: Operador;
+  products: Producto[];
 }
