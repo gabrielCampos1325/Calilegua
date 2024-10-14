@@ -1,5 +1,6 @@
 export class Comprador {
   id: number;
   nombre: string;
-  direccion: string;
+  apellido: string;
+  telefono: string;
 }

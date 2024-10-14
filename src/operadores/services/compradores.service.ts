@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateCompradorDTO,
   UpdateCompradorDTO,
-} from 'src/dtos/compradores.dto';
-import { Comprador } from 'src/entities/comprador.entity';
+} from 'src/operadores/dtos/compradores.dto';
+import { Comprador } from 'src/operadores/entities/comprador.entity';
 
 @Injectable()
 export class CompradoresService {
@@ -11,13 +11,15 @@ export class CompradoresService {
   private compradores: Comprador[] = [
     {
       id: 1,
-      nombre: 'Juan Perez',
-      direccion: 'Calle 123',
+      nombre: 'Juan',
+      apellido: 'Perez',
+      telefono: '123456789',
     },
     {
       id: 2,
-      nombre: 'Maria Lopez',
-      direccion: 'Calle 456',
+      nombre: 'Maria',
+      apellido: 'Gomez',
+      telefono: '987654321',
     },
   ];
 
@@ -35,12 +37,12 @@ export class CompradoresService {
 
   create(payload: CreateCompradorDTO) {
     this.idCont++;
-    const newProduct = {
+    const newComprador = {
       id: this.idCont,
       ...payload,
     };
-    this.compradores.push(newProduct);
-    return newProduct;
+    this.compradores.push(newComprador);
+    return newComprador;
   }
 
   update(id: number, payload: UpdateCompradorDTO) {

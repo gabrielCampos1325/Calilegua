@@ -8,8 +8,11 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { CreateProductDTO, UpdateProductDTO } from 'src/dtos/products.dto';
-import { ProductosService } from 'src/services/productos.service';
+import {
+  CreateProductDTO,
+  UpdateProductDTO,
+} from 'src/productos/dtos/products.dto';
+import { ProductosService } from 'src/productos/services/productos.service';
 
 @Controller('productos')
 export class ProductosController {

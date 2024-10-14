@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateCategoriaDTO,
   UpdateCategoriaDTO,
-} from 'src/dtos/categorias.dto';
-import { categoria } from 'src/entities/categoria.entity';
+} from 'src/productos/dtos/categorias.dto';
+import { categoria } from 'src/productos/entities/categoria.entity';
 
 @Injectable()
 export class CategoriasService {
@@ -12,12 +12,10 @@ export class CategoriasService {
     {
       id: 1,
       nombre: 'Categoria A',
-      descripcion: 'Descripcion categoria A',
     },
     {
       id: 2,
       nombre: 'Categoria B',
-      descripcion: 'Descripcion categoria B',
     },
   ];
 
@@ -35,12 +33,12 @@ export class CategoriasService {
 
   create(payload: CreateCategoriaDTO) {
     this.idCont++;
-    const newProduct = {
+    const newCategoria = {
       id: this.idCont,
       ...payload,
     };
-    this.categorias.push(newProduct);
-    return newProduct;
+    this.categorias.push(newCategoria);
+    return newCategoria;
   }
 
   update(id: number, payload: UpdateCategoriaDTO) {

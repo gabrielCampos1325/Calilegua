@@ -11,8 +11,8 @@ import {
 import {
   CreateCompradorDTO,
   UpdateCompradorDTO,
-} from 'src/dtos/compradores.dto';
-import { CompradoresService } from 'src/services/compradores.service';
+} from 'src/operadores/dtos/compradores.dto';
+import { CompradoresService } from 'src/operadores/services/compradores.service';
 
 @Controller('compradores')
 export class CompradoresController {

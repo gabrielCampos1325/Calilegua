@@ -8,7 +8,11 @@ export class CreateCompradorDTO {
 
   @IsString()
   @IsNotEmpty()
-  readonly direccion: string;
+  readonly apellido: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly telefono: string;
 }
 
 export class UpdateCompradorDTO extends PartialType(

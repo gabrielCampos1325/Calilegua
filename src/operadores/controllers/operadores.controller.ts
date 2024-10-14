@@ -8,8 +8,11 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { CreateOperadorDTO, UpdateOperadorDTO } from 'src/dtos/operadores.dto';
-import { OperadoresService } from 'src/services/operadores.service';
+import {
+  CreateOperadorDTO,
+  UpdateOperadorDTO,
+} from 'src/operadores/dtos/operadores.dto';
+import { OperadoresService } from 'src/operadores/services/operadores.service';
 
 @Controller('operadores')
 export class OperadoresController {
