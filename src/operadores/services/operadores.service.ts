@@ -11,15 +11,15 @@ export class OperadoresService {
   private operadores: Operador[] = [
     {
       id: 1,
-      nombre: 'Operador A',
-      apellido: 'Apellido Operador A',
       email: 'juan@gmail.com',
+      password: '123456',
+      role: 'role1',
     },
     {
       id: 2,
-      nombre: 'Operador B',
-      apellido: 'Apellido Operador B',
       email: 'pedro@gmail.com',
+      password: '789456',
+      role: 'role2',
     },
   ];
 
@@ -37,12 +37,12 @@ export class OperadoresService {
 
   create(payload: CreateOperadorDTO) {
     this.idCont++;
-    const newProduct = {
+    const newOperador = {
       id: this.idCont,
       ...payload,
     };
-    this.operadores.push(newProduct);
-    return newProduct;
+    this.operadores.push(newOperador);
+    return newOperador;
   }
 
   update(id: number, payload: UpdateOperadorDTO) {

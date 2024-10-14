@@ -12,12 +12,10 @@ export class CategoriasService {
     {
       id: 1,
       nombre: 'Categoria A',
-      descripcion: 'Descripcion categoria A',
     },
     {
       id: 2,
       nombre: 'Categoria B',
-      descripcion: 'Descripcion categoria B',
     },
   ];
 
@@ -35,12 +33,12 @@ export class CategoriasService {
 
   create(payload: CreateCategoriaDTO) {
     this.idCont++;
-    const newProduct = {
+    const newCategoria = {
       id: this.idCont,
       ...payload,
     };
-    this.categorias.push(newProduct);
-    return newProduct;
+    this.categorias.push(newCategoria);
+    return newCategoria;
   }
 
   update(id: number, payload: UpdateCategoriaDTO) {

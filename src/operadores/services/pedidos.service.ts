@@ -7,12 +7,16 @@ import { Pedido } from 'src/operadores/entities/pedido.entity';
 
 @Injectable()
 export class PedidosService {
-  private idCont = 2;
   private pedidos: Pedido[] = [
     {
-      id: 1,
-      clienteId: 1,
-      productos: [
+      date: new Date(),
+      operador: {
+        id: 1,
+        email: 'juan@gmail.com',
+        password: '123456',
+        role: 'role1',
+      },
+      products: [
         {
           id: 1,
           nombre: 'Prod A',
@@ -25,9 +29,14 @@ export class PedidosService {
       ],
     },
     {
-      id: 2,
-      clienteId: 2,
-      productos: [
+      date: new Date(),
+      operador: {
+        id: 1,
+        email: 'juan@gmail.com',
+        password: '123456',
+        role: 'role1',
+      },
+      products: [
         {
           id: 2,
           nombre: 'Prod B',
@@ -54,9 +63,7 @@ export class PedidosService {
   }
 
   create(payload: CreatePedidoDTO) {
-    this.idCont++;
     const newPedido = {
-      id: this.idCont,
       ...payload,
     };
     this.pedidos.push(newPedido);

@@ -12,12 +12,16 @@ export class FabricantesService {
     {
       id: 1,
       nombre: 'Fabricante A',
-      pais: 'China',
+      direccion: 'Calle 123',
+      email: 'fabricantea@gmail.com',
+      imagen: 'https://placeimgb.com',
     },
     {
       id: 2,
       nombre: 'Fabricante B',
-      pais: 'Argentina',
+      direccion: 'Calle 456',
+      email: 'fabricanteb@gmail.com',
+      imagen: 'https://placeimga.com',
     },
   ];
 
@@ -37,12 +41,12 @@ export class FabricantesService {
 
   create(payload: CreateFabricanteDTO) {
     this.idCont++;
-    const newProduct = {
+    const newFabricante = {
       id: this.idCont,
       ...payload,
     };
-    this.fabricante.push(newProduct);
-    return newProduct;
+    this.fabricante.push(newFabricante);
+    return newFabricante;
   }
 
   update(id: number, payload: UpdateFabricanteDTO) {
