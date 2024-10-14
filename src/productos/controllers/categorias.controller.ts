@@ -11,8 +11,8 @@ import {
 import {
   CreateCategoriaDTO,
   UpdateCategoriaDTO,
-} from 'src/dtos/categorias.dto';
-import { CategoriasService } from 'src/services/categorias.service';
+} from 'src/productos/dtos/categorias.dto';
+import { CategoriasService } from 'src/productos/services/categorias.service';
 
 @Controller('categorias')
 export class CategoriasController {

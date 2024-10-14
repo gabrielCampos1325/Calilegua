@@ -11,8 +11,8 @@ import {
 import {
   CreateFabricanteDTO,
   UpdateFabricanteDTO,
-} from 'src/dtos/fabricantes.dto';
-import { FabricantesService } from 'src/services/fabricantes.service';
+} from 'src/productos/dtos/fabricantes.dto';
+import { FabricantesService } from 'src/productos/services/fabricantes.service';
 
 @Controller('fabricantes')
 export class FabricantesController {

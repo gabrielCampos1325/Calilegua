@@ -1,6 +1,6 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { IsNotEmpty, IsNumber, IsPositive } from 'class-validator';
-import { Producto } from 'src/entities/producto.entity';
+import { Producto } from 'src/productos/entities/producto.entity';
 
 export class CreatePedidoDTO {
   @IsNumber()

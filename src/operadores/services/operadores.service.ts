@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOperadorDTO, UpdateOperadorDTO } from 'src/dtos/operadores.dto';
-import { Operador } from 'src/entities/operador.entiy';
+import {
+  CreateOperadorDTO,
+  UpdateOperadorDTO,
+} from 'src/operadores/dtos/operadores.dto';
+import { Operador } from 'src/operadores/entities/operador.entiy';
 
 @Injectable()
 export class OperadoresService {

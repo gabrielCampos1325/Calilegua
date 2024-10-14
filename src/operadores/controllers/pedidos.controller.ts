@@ -8,8 +8,11 @@ import {
   Put,
   ParseIntPipe,
 } from '@nestjs/common';
-import { CreatePedidoDTO, UpdatePedidoDTO } from 'src/dtos/pedidos.dto';
-import { PedidosService } from 'src/services/pedidos.service';
+import {
+  CreatePedidoDTO,
+  UpdatePedidoDTO,
+} from 'src/operadores/dtos/pedidos.dto';
+import { PedidosService } from 'src/operadores/services/pedidos.service';
 
 @Controller('pedidos')
 export class PedidosController {

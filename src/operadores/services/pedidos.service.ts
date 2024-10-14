@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePedidoDTO, UpdatePedidoDTO } from 'src/dtos/pedidos.dto';
-import { Pedido } from 'src/entities/pedido.entity';
+import {
+  CreatePedidoDTO,
+  UpdatePedidoDTO,
+} from 'src/operadores/dtos/pedidos.dto';
+import { Pedido } from 'src/operadores/entities/pedido.entity';
 
 @Injectable()
 export class PedidosService {

@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateCategoriaDTO,
   UpdateCategoriaDTO,
-} from 'src/dtos/categorias.dto';
-import { categoria } from 'src/entities/categoria.entity';
+} from 'src/productos/dtos/categorias.dto';
+import { categoria } from 'src/productos/entities/categoria.entity';
 
 @Injectable()
 export class CategoriasService {

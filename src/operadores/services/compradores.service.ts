@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateCompradorDTO,
   UpdateCompradorDTO,
-} from 'src/dtos/compradores.dto';
-import { Comprador } from 'src/entities/comprador.entity';
+} from 'src/operadores/dtos/compradores.dto';
+import { Comprador } from 'src/operadores/entities/comprador.entity';
 
 @Injectable()
 export class CompradoresService {

@@ -1,5 +1,5 @@
 import { Operador } from './operador.entiy';
-import { Producto } from './producto.entity';
+import { Producto } from '../../productos/entities/producto.entity';
 
 export class Pedido {
   date: Date;

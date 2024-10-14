@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateFabricanteDTO,
   UpdateFabricanteDTO,
-} from 'src/dtos/fabricantes.dto';
-import { Fabricante } from 'src/entities/fabricante.entity';
+} from 'src/productos/dtos/fabricantes.dto';
+import { Fabricante } from 'src/productos/entities/fabricante.entity';
 
 @Injectable()
 export class FabricantesService {
