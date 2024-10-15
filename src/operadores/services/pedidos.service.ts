@@ -50,13 +50,13 @@ export class PedidosService {
     },
   ];
 
-  findOne(id: number) {
+  /*findOne(id: number) {
     const pedido = this.pedidos.find((pedido) => pedido.id === id);
     if (!pedido) {
       throw new Error(`El pedido con id: #${id} no existe`);
     }
     return pedido;
-  }
+  }*/
 
   findAll() {
     return this.pedidos;
@@ -70,7 +70,7 @@ export class PedidosService {
     return newPedido;
   }
 
-  update(id: number, payload: UpdatePedidoDTO) {
+  /*update(id: number, payload: UpdatePedidoDTO) {
     const index = this.pedidos.findIndex((pedido) => pedido.id === id);
     if (index === -1) {
       throw new Error(`El pedido con id: #${id} no existe`);
@@ -80,14 +80,14 @@ export class PedidosService {
       ...payload,
     };
     return this.pedidos[index];
-  }
+  }*/
 
-  delete(id: number) {
+  /*delete(id: number) {
     const index = this.pedidos.findIndex((pedido) => pedido.id === id);
     if (index === -1) {
       throw new Error(`El pedido con id: #${id} no existe`);
     }
     this.pedidos.splice(index, 1);
     return true;
-  }
+  }*/
 }

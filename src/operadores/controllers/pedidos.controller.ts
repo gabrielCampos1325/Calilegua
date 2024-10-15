@@ -18,10 +18,10 @@ import { PedidosService } from 'src/operadores/services/pedidos.service';
 export class PedidosController {
   constructor(private pedidosService: PedidosService) {}
 
-  @Get(':id')
+  /*@Get(':id')
   getPedidosById(@Param('id', ParseIntPipe) id: number) {
     return this.pedidosService.findOne(id);
-  }
+  }*/
 
   @Get()
   findAll() {
@@ -33,16 +33,16 @@ export class PedidosController {
     return this.pedidosService.create(payload);
   }
 
-  @Put(':id')
+  /*@Put(':id')
   updatePedido(
     @Param('id', ParseIntPipe) idPedido: number,
     @Body() body: UpdatePedidoDTO,
   ): any {
     return this.pedidosService.update(idPedido, body);
-  }
+  }*/
 
-  @Delete(':id')
+  /*@Delete(':id')
   deletePedido(@Param('id', ParseIntPipe) idPedido: number): any {
     return this.pedidosService.delete(idPedido);
-  }
+  }*/
 }
