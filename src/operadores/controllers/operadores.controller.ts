@@ -28,6 +28,11 @@ export class OperadoresController {
     return this.operadoresService.findAll();
   }
 
+  @Get(':id/pedidos')
+  getOrders(@Param('id', ParseIntPipe) id: number) {
+    return this.operadoresService.getOrderByUser(id);
+  }
+
   @Post()
   create(@Body() payload: CreateOperadorDTO) {
     return this.operadoresService.create(payload);
