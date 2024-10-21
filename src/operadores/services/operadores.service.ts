@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateOperadorDTO,
   UpdateOperadorDTO,
@@ -9,7 +9,10 @@ import { Pedido } from '../entities/pedido.entity';
 
 @Injectable()
 export class OperadoresService {
-  constructor(private productService: ProductosService) {}
+  constructor(
+    private productService: ProductosService,
+    @Inject('APIKEY') private apiKey: string, // GlobalModule Database
+  ) {}
 
   private idCont = 2;
   private operadores: Operador[] = [

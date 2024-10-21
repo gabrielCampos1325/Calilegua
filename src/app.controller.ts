@@ -9,4 +9,9 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('usefactory')
+  getUseFactory(): string {
+    return this.appService.getUseFactory();
+  }
 }
