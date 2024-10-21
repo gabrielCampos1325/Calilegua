@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   CreateOperadorDTO,
   UpdateOperadorDTO,
@@ -6,12 +6,13 @@ import {
 import { Operador } from 'src/operadores/entities/operador.entiy';
 import { ProductosService } from 'src/productos/services/productos.service';
 import { Pedido } from '../entities/pedido.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class OperadoresService {
   constructor(
     private productService: ProductosService,
-    @Inject('APIKEY') private apiKey: string, // GlobalModule Database
+    private configService: ConfigService,
   ) {}
 
   private idCont = 2;
@@ -48,6 +49,9 @@ export class OperadoresService {
   }
 
   findAll() {
+    const apiKey = this.configService.get('API_KEY');
+    const dbName = this.configService.get('DATABASE_NAME');
+    console.log(apiKey, dbName);
     return this.operadores;
   }
 
