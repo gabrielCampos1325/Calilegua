@@ -8,12 +8,14 @@ import {
   Put,
   ParseIntPipe,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreatePedidoDTO,
   UpdatePedidoDTO,
 } from 'src/operadores/dtos/pedidos.dto';
 import { PedidosService } from 'src/operadores/services/pedidos.service';
 
+@ApiTags('Pedidos')
 @Controller('pedidos')
 export class PedidosController {
   constructor(private pedidosService: PedidosService) {}
@@ -23,6 +25,7 @@ export class PedidosController {
     return this.pedidosService.findOne(id);
   }*/
 
+  @ApiOperation({ summary: 'Catalogo de todos los pedidos' })
   @Get()
   findAll() {
     return this.pedidosService.findAll();

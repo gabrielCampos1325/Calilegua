@@ -8,12 +8,14 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateFabricanteDTO,
   UpdateFabricanteDTO,
 } from 'src/productos/dtos/fabricantes.dto';
 import { FabricantesService } from 'src/productos/services/fabricantes.service';
 
+@ApiTags('Fabricantes')
 @Controller('fabricantes')
 export class FabricantesController {
   constructor(private fabricantesService: FabricantesService) {}
@@ -23,6 +25,7 @@ export class FabricantesController {
     return this.fabricantesService.findOne(id);
   }
 
+  @ApiOperation({ summary: 'Catalogo de todos los fabricantes' })
   @Get()
   findAll() {
     return this.fabricantesService.findAll();
