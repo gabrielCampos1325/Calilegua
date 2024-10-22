@@ -8,12 +8,14 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateOperadorDTO,
   UpdateOperadorDTO,
 } from 'src/operadores/dtos/operadores.dto';
 import { OperadoresService } from 'src/operadores/services/operadores.service';
 
+@ApiTags('Operadores')
 @Controller('operadores')
 export class OperadoresController {
   constructor(private operadoresService: OperadoresService) {}
@@ -23,6 +25,7 @@ export class OperadoresController {
     return this.operadoresService.findOne(id);
   }
 
+  @ApiOperation({ summary: 'Catalogo de todos los operadores' })
   @Get()
   findAll() {
     return this.operadoresService.findAll();
