@@ -20,6 +20,11 @@ import { OperadoresService } from 'src/operadores/services/operadores.service';
 export class OperadoresController {
   constructor(private operadoresService: OperadoresService) {}
 
+  @Get('tasks')
+  getTasks() {
+    return this.operadoresService.getTasks();
+  }
+
   @Get(':id')
   getUserById(@Param('id', ParseIntPipe) id: number) {
     return this.operadoresService.findOne(id);

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateOperadorDTO,
   UpdateOperadorDTO,
@@ -7,12 +7,14 @@ import { Operador } from 'src/operadores/entities/operador.entiy';
 import { ProductosService } from 'src/productos/services/productos.service';
 import { Pedido } from '../entities/pedido.entity';
 import { ConfigService } from '@nestjs/config';
+import { Client } from 'pg';
 
 @Injectable()
 export class OperadoresService {
   constructor(
     private productService: ProductosService,
     private configService: ConfigService,
+    @Inject('PG') private clientPg: Client,
   ) {}
 
   private idCont = 2;
@@ -30,6 +32,20 @@ export class OperadoresService {
       role: 'role2',
     },
   ];
+
+  getTasks() {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        'SELECT * FROM tareas ORDER BY id ASC',
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
+  }
 
   getOrderByUser(id: number): Pedido {
     const operador = this.findOne(id);

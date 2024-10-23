@@ -1,10 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import config from './config';
+import { Client } from 'pg';
 
 @Injectable()
 export class AppService {
   constructor(
+    @Inject('PG') private clientPg: Client,
     @Inject('TAREA_ASINC') private tarea: any[],
     @Inject(config.KEY) private configServ: ConfigType<typeof config>,
   ) {}
@@ -19,5 +21,16 @@ export class AppService {
   getUseFactory(): string {
     console.log(this.tarea);
     return 'Realizando tarea asincrona de ejemplo';
+  }
+
+  getTasks() {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query('SELECT * FROM tasks', (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res.rows);
+      });
+    });
   }
 }
