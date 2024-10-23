@@ -20,6 +20,11 @@ export class AppController {
     return this.appService.getUseFactory();
   }
 
+  @Get('tasks')
+  tasks() {
+    return this.appService.getTasks();
+  }
+
   getEnvs(): string {
     const apiKey = this.configService.apiKey;
     const name = this.configService.database.name;
