@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { Client } from 'pg';
 import config from 'src/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const APIKEY = 'DEV-456';
 const APIKEYPROD = 'PROD-12345';
@@ -25,6 +26,24 @@ client.query('SELECT * FROM tareas', (err, res) => {
 
 @Global()
 @Module({
+  imports: [
+    TypeOrmModule.forRootAsync({
+      inject: [config.KEY],
+      useFactory: (configService: ConfigType<typeof config>) => {
+        const { user, host, name, password, port } = configService.postgres;
+        return {
+          type: 'postgres',
+          host,
+          port,
+          username: user,
+          password,
+          database: name,
+          synchronize: true,
+          autoLoadEntities: true,
+        };
+      },
+    }),
+  ],
   providers: [
     {
       provide: 'APIKEY',
@@ -33,11 +52,11 @@ client.query('SELECT * FROM tareas', (err, res) => {
     {
       provide: 'PG',
       useFactory: (configService: ConfigType<typeof config>) => {
-        const { user, host, dbName, password, port } = configService.postgres;
+        const { user, host, name, password, port } = configService.postgres;
         const client = new Client({
           user,
           host,
-          database: dbName,
+          database: name,
           password,
           port,
         });
@@ -47,6 +66,6 @@ client.query('SELECT * FROM tareas', (err, res) => {
       inject: [config.KEY],
     },
   ],
-  exports: ['APIKEY', 'PG'],
+  exports: ['APIKEY', 'PG', TypeOrmModule],
 })
 export class DatabaseModule {}
