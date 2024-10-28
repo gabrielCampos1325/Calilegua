@@ -1,12 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import {
   CreateProductDTO,
   UpdateProductDTO,
 } from 'src/productos/dtos/products.dto';
 import { Producto } from 'src/productos/entities/producto.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProductosService {
+  constructor(
+    @InjectRepository(Producto)
+    private productoRepository: Repository<Producto>,
+  ) {}
+
   private idCont = 2;
   private productos: Producto[] = [
     {
@@ -30,7 +37,7 @@ export class ProductosService {
   ];
 
   findOne(id: number) {
-    const product = this.productos.find((producto) => producto.id === id);
+    const product = this.productoRepository.findOneBy({ id });
     if (!product) {
       throw new Error(`El producto con id: #${id} no existe`);
     }
@@ -38,37 +45,21 @@ export class ProductosService {
   }
 
   findAll() {
-    return this.productos;
+    return this.productoRepository.find();
   }
 
-  create(payload: CreateProductDTO) {
-    this.idCont++;
-    const newProduct = {
-      id: this.idCont,
-      ...payload,
-    };
-    this.productos.push(newProduct);
-    return newProduct;
+  create(data: CreateProductDTO) {
+    const newProduct = this.productoRepository.create(data);
+    return this.productoRepository.save(newProduct);
   }
 
-  update(id: number, payload: UpdateProductDTO) {
-    const index = this.productos.findIndex((producto) => producto.id === id);
-    if (index === -1) {
-      throw new Error(`El producto con id: #${id} no existe`);
-    }
-    this.productos[index] = {
-      ...this.productos[index],
-      ...payload,
-    };
-    return this.productos[index];
+  async update(id: number, changes: UpdateProductDTO) {
+    const product = await this.productoRepository.findOneBy({ id });
+    this.productoRepository.merge(product, changes);
+    return this.productoRepository.save(product);
   }
 
   delete(id: number) {
-    const index = this.productos.findIndex((producto) => producto.id === id);
-    if (index === -1) {
-      throw new Error(`El producto con id: #${id} no existe`);
-    }
-    this.productos.splice(index, 1);
-    return true;
+    return this.productoRepository.delete(id);
   }
 }

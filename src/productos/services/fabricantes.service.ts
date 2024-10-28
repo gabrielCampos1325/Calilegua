@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import {
   CreateFabricanteDTO,
   UpdateFabricanteDTO,
 } from 'src/productos/dtos/fabricantes.dto';
 import { Fabricante } from 'src/productos/entities/fabricante.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class FabricantesService {
+  constructor(
+    @InjectRepository(Fabricante)
+    private fabricanteRepository: Repository<Fabricante>,
+  ) {}
   private idCont = 2;
   private fabricante: Fabricante[] = [
     {
@@ -26,9 +32,7 @@ export class FabricantesService {
   ];
 
   findOne(id: number) {
-    const fabricante = this.fabricante.find(
-      (fabricante) => fabricante.id === id,
-    );
+    const fabricante = this.fabricanteRepository.findOneBy({ id });
     if (!fabricante) {
       throw new Error(`El fabricante con id: #${id} no existe`);
     }
@@ -36,41 +40,21 @@ export class FabricantesService {
   }
 
   findAll() {
-    return this.fabricante;
+    return this.fabricanteRepository.find();
   }
 
-  create(payload: CreateFabricanteDTO) {
-    this.idCont++;
-    const newFabricante = {
-      id: this.idCont,
-      ...payload,
-    };
-    this.fabricante.push(newFabricante);
-    return newFabricante;
+  create(data: CreateFabricanteDTO) {
+    const newFabricante = this.fabricanteRepository.create(data);
+    return this.fabricanteRepository.save(newFabricante);
   }
 
-  update(id: number, payload: UpdateFabricanteDTO) {
-    const index = this.fabricante.findIndex(
-      (fabricante) => fabricante.id === id,
-    );
-    if (index === -1) {
-      throw new Error(`El fabricante con id: #${id} no existe`);
-    }
-    this.fabricante[index] = {
-      ...this.fabricante[index],
-      ...payload,
-    };
-    return this.fabricante[index];
+  async update(id: number, changes: UpdateFabricanteDTO) {
+    const fabricante = await this.fabricanteRepository.findOneBy({ id });
+    this.fabricanteRepository.merge(fabricante, changes);
+    return this.fabricanteRepository.save(fabricante);
   }
 
   delete(id: number) {
-    const index = this.fabricante.findIndex(
-      (fabricante) => fabricante.id === id,
-    );
-    if (index === -1) {
-      throw new Error(`El fabricante con id: #${id} no existe`);
-    }
-    this.fabricante.splice(index, 1);
-    return true;
+    return this.fabricanteRepository.delete(id);
   }
 }
