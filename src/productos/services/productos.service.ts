@@ -14,7 +14,7 @@ export class ProductosService {
     private productoRepository: Repository<Producto>,
   ) {}
 
-  private idCont = 2;
+  /*private idCont = 2;
   private productos: Producto[] = [
     {
       id: 1,
@@ -34,10 +34,10 @@ export class ProductosService {
       origen: 'Japon',
       imagen: '',
     },
-  ];
+  ];*/
 
   findOne(id: number) {
-    const product = this.productoRepository.findOneBy({ id });
+    const product = this.productoRepository.findOne({ where: { id } });
     if (!product) {
       throw new Error(`El producto con id: #${id} no existe`);
     }
@@ -54,7 +54,7 @@ export class ProductosService {
   }
 
   async update(id: number, changes: UpdateProductDTO) {
-    const product = await this.productoRepository.findOneBy({ id });
+    const product = await this.productoRepository.findOne({ where: { id } });
     this.productoRepository.merge(product, changes);
     return this.productoRepository.save(product);
   }

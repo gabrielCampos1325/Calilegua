@@ -65,7 +65,7 @@ export class OperadoresService {
   }
 
   findOne(id: number) {
-    const operador = this.operadorRepository.findOneBy({ id });
+    const operador = this.operadorRepository.findOne({ where: { id } });
     if (!operador) {
       throw new Error(`El operador con id: #${id} no existe`);
     }
@@ -82,7 +82,7 @@ export class OperadoresService {
   }
 
   async update(id: number, changes: UpdateOperadorDTO) {
-    const operador = await this.operadorRepository.findOneBy({ id });
+    const operador = await this.operadorRepository.findOne({ where: { id } });
     this.operadorRepository.merge(operador, changes);
     return this.operadorRepository.save(operador);
   }
