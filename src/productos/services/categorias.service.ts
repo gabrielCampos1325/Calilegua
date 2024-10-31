@@ -14,7 +14,7 @@ export class CategoriasService {
     private categoriaRepository: Repository<Categoria>,
   ) {}
 
-  private idCont = 2;
+  /*private idCont = 2;
   private categorias: Categoria[] = [
     {
       id: 1,
@@ -24,10 +24,10 @@ export class CategoriasService {
       id: 2,
       nombre: 'Categoria B',
     },
-  ];
+  ];*/
 
   findOne(id: number) {
-    const product = this.categoriaRepository.findOneBy({ id });
+    const product = this.categoriaRepository.findOne({ where: { id } });
     if (!product) {
       throw new Error(`El producto con id: #${id} no existe`);
     }
@@ -44,7 +44,7 @@ export class CategoriasService {
   }
 
   async update(id: number, changes: UpdateCategoriaDTO) {
-    const categoria = await this.categoriaRepository.findOneBy({ id });
+    const categoria = await this.categoriaRepository.findOne({ where: { id } });
     this.categoriaRepository.merge(categoria, changes);
     return this.categoriaRepository.save(categoria);
   }

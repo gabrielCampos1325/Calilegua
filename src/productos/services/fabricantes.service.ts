@@ -13,7 +13,8 @@ export class FabricantesService {
     @InjectRepository(Fabricante)
     private fabricanteRepository: Repository<Fabricante>,
   ) {}
-  private idCont = 2;
+
+  /*private idCont = 2;
   private fabricante: Fabricante[] = [
     {
       id: 1,
@@ -29,10 +30,10 @@ export class FabricantesService {
       email: 'fabricanteb@gmail.com',
       imagen: 'https://placeimga.com',
     },
-  ];
+  ];*/
 
   findOne(id: number) {
-    const fabricante = this.fabricanteRepository.findOneBy({ id });
+    const fabricante = this.fabricanteRepository.findOne({ where: { id } });
     if (!fabricante) {
       throw new Error(`El fabricante con id: #${id} no existe`);
     }
@@ -49,7 +50,9 @@ export class FabricantesService {
   }
 
   async update(id: number, changes: UpdateFabricanteDTO) {
-    const fabricante = await this.fabricanteRepository.findOneBy({ id });
+    const fabricante = await this.fabricanteRepository.findOne({
+      where: { id },
+    });
     this.fabricanteRepository.merge(fabricante, changes);
     return this.fabricanteRepository.save(fabricante);
   }

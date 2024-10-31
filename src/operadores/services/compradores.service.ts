@@ -14,7 +14,7 @@ export class CompradoresService {
     private compradorRepository: Repository<Comprador>,
   ) {}
 
-  private idCont = 2;
+  /*private idCont = 2;
   private compradores: Comprador[] = [
     {
       id: 1,
@@ -28,10 +28,10 @@ export class CompradoresService {
       apellido: 'Gomez',
       telefono: '987654321',
     },
-  ];
+  ];*/
 
   findOne(id: number) {
-    const comprador = this.compradorRepository.findOneBy({ id });
+    const comprador = this.compradorRepository.findOne({ where: { id } });
     if (!comprador) {
       throw new Error(`El comprador con id: #${id} no existe`);
     }
@@ -48,7 +48,7 @@ export class CompradoresService {
   }
 
   async update(id: number, changes: UpdateCompradorDTO) {
-    const comprador = await this.compradorRepository.findOneBy({ id });
+    const comprador = await this.compradorRepository.findOne({ where: { id } });
     this.compradorRepository.merge(comprador, changes);
     return this.compradorRepository.save(comprador);
   }

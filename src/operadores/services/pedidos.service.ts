@@ -14,7 +14,7 @@ export class PedidosService {
     private pedidoRepository: Repository<Pedido>,
   ) {}
 
-  private id = 2;
+  /*private id = 2;
   private pedidos: Pedido[] = [
     {
       id: 1,
@@ -58,10 +58,10 @@ export class PedidosService {
         },
       ],
     },
-  ];
+  ];*/
 
   findOne(id: number) {
-    const pedido = this.pedidoRepository.findOneBy({ id });
+    const pedido = this.pedidoRepository.findOne({ where: { id } });
     if (!pedido) {
       throw new Error(`El pedido con id: #${id} no existe`);
     }
@@ -78,7 +78,7 @@ export class PedidosService {
   }
 
   async update(id: number, changes: UpdatePedidoDTO) {
-    const pedido = await this.pedidoRepository.findOneBy({ id });
+    const pedido = await this.pedidoRepository.findOne({ where: { id } });
     this.pedidoRepository.merge(pedido, changes);
     return this.pedidoRepository.save(pedido);
   }
