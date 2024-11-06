@@ -1,4 +1,4 @@
-import { Operador } from './operador.entiy';
+import { Operador } from './operador.entity';
 import { Producto } from '../../productos/entities/producto.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 

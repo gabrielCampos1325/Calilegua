@@ -3,7 +3,7 @@ import {
   CreateOperadorDTO,
   UpdateOperadorDTO,
 } from 'src/operadores/dtos/operadores.dto';
-import { Operador } from 'src/operadores/entities/operador.entiy';
+import { Operador } from 'src/operadores/entities/operador.entity';
 import { ProductosService } from 'src/productos/services/productos.service';
 import { Pedido } from '../entities/pedido.entity';
 import { ConfigService } from '@nestjs/config';
