@@ -1,7 +1,7 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { Producto } from 'src/productos/entities/producto.entity';
-import { Operador } from '../entities/operador.entiy';
+import { Operador } from '../entities/operador.entity';
 
 export class CreatePedidoDTO {
   @ApiProperty()
