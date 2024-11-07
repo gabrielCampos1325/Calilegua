@@ -33,7 +33,10 @@ export class FabricantesService {
   ];*/
 
   findOne(id: number) {
-    const fabricante = this.fabricanteRepository.findOne({ where: { id } });
+    const fabricante = this.fabricanteRepository.findOne({
+      where: { id },
+      relations: ['products'],
+    });
     if (!fabricante) {
       throw new Error(`El fabricante con id: #${id} no existe`);
     }
@@ -41,7 +44,9 @@ export class FabricantesService {
   }
 
   findAll() {
-    return this.fabricanteRepository.find();
+    return this.fabricanteRepository.find({
+      relations: ['products'],
+    });
   }
 
   create(data: CreateFabricanteDTO) {
