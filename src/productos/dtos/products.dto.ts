@@ -38,6 +38,11 @@ export class CreateProductDTO {
   @IsUrl()
   @IsNotEmpty()
   readonly imagen: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsPositive()
+  readonly fabricanteId: number;
 }
 
 export class UpdateProductDTO extends PartialType(
