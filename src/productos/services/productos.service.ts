@@ -7,12 +7,15 @@ import {
 import { Producto } from 'src/productos/entities/producto.entity';
 import { Repository } from 'typeorm';
 import { FabricantesService } from './fabricantes.service';
+import { Categoria } from '../entities/categoria.entity';
 
 @Injectable()
 export class ProductosService {
   constructor(
     @InjectRepository(Producto)
     private productoRepository: Repository<Producto>,
+    @InjectRepository(Categoria)
+    private categoriaRepository: Repository<Categoria>,
     private fabricantesService: FabricantesService,
   ) {}
 
@@ -41,7 +44,7 @@ export class ProductosService {
   findOne(id: number) {
     const product = this.productoRepository.findOne({
       where: { id },
-      relations: ['fabricante'],
+      relations: ['fabricante', 'categorias'],
     });
     if (!product) {
       throw new Error(`El producto con id: #${id} no existe`);
@@ -51,7 +54,7 @@ export class ProductosService {
 
   findAll() {
     return this.productoRepository.find({
-      relations: ['fabricante'],
+      relations: ['fabricante', 'categorias'],
     });
   }
 
@@ -63,6 +66,12 @@ export class ProductosService {
       );
       newProduct.fabricante = fabricante;
     }
+    if (data.categoriasId) {
+      const categorias = await this.categoriaRepository.findByIds(
+        data.categoriasId,
+      );
+      newProduct.categorias = categorias;
+    }
     return this.productoRepository.save(newProduct);
   }
 
@@ -73,6 +82,12 @@ export class ProductosService {
         changes.fabricanteId,
       );
       product.fabricante = fabricante;
+    }
+    if (changes.categoriasId) {
+      const categorias = await this.categoriaRepository.findByIds(
+        changes.categoriasId,
+      );
+      product.categorias = categorias;
     }
     this.productoRepository.merge(product, changes);
     return this.productoRepository.save(product);
