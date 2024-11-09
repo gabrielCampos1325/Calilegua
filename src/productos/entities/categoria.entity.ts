@@ -4,7 +4,10 @@ import {
   Entity,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { Producto } from './producto.entity';
 
 @Entity()
 export class Categoria {
@@ -25,4 +28,8 @@ export class Categoria {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
+
+  @ManyToMany(() => Producto, (producto) => producto.categorias)
+  @JoinTable({ name: 'categorias_productos' })
+  productos: Producto[];
 }

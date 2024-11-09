@@ -2,12 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Fabricante } from './fabricante.entity';
+import { Categoria } from './categoria.entity';
 
 @Entity()
 export class Producto {
@@ -45,6 +46,8 @@ export class Producto {
   updateAt: Date;
 
   @ManyToOne(() => Fabricante, (fabricante) => fabricante.products)
-  @JoinColumn({ name: 'fabricanteId' })
   fabricante: Fabricante;
+
+  @ManyToMany(() => Categoria, (categoria) => categoria.productos)
+  categorias: Categoria[];
 }

@@ -7,12 +7,15 @@ import {
 import { Producto } from 'src/productos/entities/producto.entity';
 import { Repository } from 'typeorm';
 import { FabricantesService } from './fabricantes.service';
+import { Categoria } from '../entities/categoria.entity';
 
 @Injectable()
 export class ProductosService {
   constructor(
     @InjectRepository(Producto)
     private productoRepository: Repository<Producto>,
+    @InjectRepository(Categoria)
+    private categoriaRepository: Repository<Categoria>,
     private fabricantesService: FabricantesService,
   ) {}
 
@@ -41,7 +44,7 @@ export class ProductosService {
   findOne(id: number) {
     const product = this.productoRepository.findOne({
       where: { id },
-      relations: ['fabricante'],
+      relations: ['fabricante', 'categorias'],
     });
     if (!product) {
       throw new Error(`El producto con id: #${id} no existe`);
@@ -51,7 +54,7 @@ export class ProductosService {
 
   findAll() {
     return this.productoRepository.find({
-      relations: ['fabricante'],
+      relations: ['fabricante', 'categorias'],
     });
   }
 
@@ -62,6 +65,12 @@ export class ProductosService {
         data.fabricanteId,
       );
       newProduct.fabricante = fabricante;
+    }
+    if (data.categoriasId) {
+      const categorias = await this.categoriaRepository.findByIds(
+        data.categoriasId,
+      );
+      newProduct.categorias = categorias;
     }
     return this.productoRepository.save(newProduct);
   }
@@ -74,7 +83,36 @@ export class ProductosService {
       );
       product.fabricante = fabricante;
     }
+    if (changes.categoriasId) {
+      const categorias = await this.categoriaRepository.findByIds(
+        changes.categoriasId,
+      );
+      product.categorias = categorias;
+    }
     this.productoRepository.merge(product, changes);
+    return this.productoRepository.save(product);
+  }
+
+  async removeCategoryByProduct(productId: number, categoryId: number) {
+    const product = await this.productoRepository.findOne({
+      where: { id: productId },
+      relations: ['categorias'],
+    });
+    product.categorias = product.categorias.filter(
+      (category) => category.id !== categoryId,
+    );
+    return this.productoRepository.save(product);
+  }
+
+  async addCategoryByProduct(productId: number, categoryId: number) {
+    const product = await this.productoRepository.findOne({
+      where: { id: productId },
+      relations: ['categorias'],
+    });
+    const category = await this.categoriaRepository.findOne({
+      where: { id: categoryId },
+    });
+    product.categorias.push(category);
     return this.productoRepository.save(product);
   }
 
