@@ -6,12 +6,14 @@ import {
 } from 'src/operadores/dtos/pedidos.dto';
 import { Pedido } from 'src/operadores/entities/pedido.entity';
 import { Repository } from 'typeorm';
+import { Comprador } from '../entities/comprador.entity';
 
 @Injectable()
 export class PedidosService {
   constructor(
-    @InjectRepository(Pedido)
-    private pedidoRepository: Repository<Pedido>,
+    @InjectRepository(Pedido) private pedidoRepository: Repository<Pedido>,
+    @InjectRepository(Comprador)
+    private compradorRepository: Repository<Comprador>,
   ) {}
 
   /*private id = 2;
@@ -60,10 +62,12 @@ export class PedidosService {
     },
   ];*/
 
-  findOne(id: number) {
-    const pedido = this.pedidoRepository.findOne({ where: { id } });
+  async findOne(id: number) {
+    const pedido = await this.pedidoRepository.findOne(id, {
+      relations: ['detalles', 'detalles.producto'],
+    });
     if (!pedido) {
-      throw new Error(`El pedido con id: #${id} no existe`);
+      throw new Error(`Pedido con id ${id} no encontrado`);
     }
     return pedido;
   }
@@ -72,14 +76,25 @@ export class PedidosService {
     return this.pedidoRepository.find();
   }
 
-  create(data: CreatePedidoDTO) {
-    const newPedido = this.pedidoRepository.create(data);
-    return this.pedidoRepository.save(newPedido);
+  async create(data: CreatePedidoDTO) {
+    const pedido = new Pedido();
+    if (data.compradorId) {
+      const comprador = await this.compradorRepository.findOne(
+        data.compradorId,
+      );
+      pedido.comprador = comprador;
+    }
+    return this.pedidoRepository.save(pedido);
   }
 
   async update(id: number, changes: UpdatePedidoDTO) {
-    const pedido = await this.pedidoRepository.findOne({ where: { id } });
-    this.pedidoRepository.merge(pedido, changes);
+    const pedido = await this.pedidoRepository.findOne(id);
+    if (changes.compradorId) {
+      const comprador = await this.compradorRepository.findOne(
+        changes.compradorId,
+      );
+      pedido.comprador = comprador;
+    }
     return this.pedidoRepository.save(pedido);
   }
 

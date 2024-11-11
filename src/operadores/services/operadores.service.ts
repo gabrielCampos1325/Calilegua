@@ -53,18 +53,17 @@ export class OperadoresService {
     });
   }
 
-  async getOrderByUser(id: number): Promise<Pedido> {
+  /*async getOrderByUser(id: number): Promise<Pedido> {
     const operador = await this.operadorRepository.findOne({ where: { id } });
     if (!operador) {
       throw new Error(`El operador con id: #${id} no existe`);
     }
     return {
-      id: operador.id,
       date: new Date(),
       operador,
       products: await this.productService.findAll(),
     };
-  }
+  }*/
 
   findOne(id: number) {
     const operador = this.operadorRepository.findOne({
