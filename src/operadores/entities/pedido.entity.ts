@@ -1,18 +1,39 @@
 import { Operador } from './operador.entity';
-import { Producto } from '../../productos/entities/producto.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Comprador } from './comprador.entity';
+import { DetallePedido } from './detallePedido.entity';
 
 @Entity()
 export class Pedido {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'date' })
-  date: Date;
-
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   operador: Operador;
 
-  @Column({ type: 'varchar', length: 100 })
-  products: Producto[];
+  @CreateDateColumn({
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updateAt: Date;
+
+  @ManyToOne(() => Comprador, (comprador) => comprador.pedidos)
+  comprador: Comprador;
+
+  @OneToMany(() => DetallePedido, (detalle) => detalle.pedido)
+  detalles: DetallePedido[];
 }
