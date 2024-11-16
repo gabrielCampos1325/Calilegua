@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Comprador } from './comprador.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Operador {
@@ -23,12 +24,14 @@ export class Operador {
   @Column({ type: 'varchar', length: 100 })
   role: string;
 
+  @Exclude()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',

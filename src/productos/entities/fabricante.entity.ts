@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Entity } from 'typeorm';
 import { Producto } from './producto.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Fabricante {
@@ -28,12 +29,14 @@ export class Fabricante {
   @Column({ type: 'varchar', length: 255 })
   imagen: string;
 
+  @Exclude()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',

@@ -3,9 +3,12 @@ import {
   IsArray,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   IsUrl,
+  Min,
+  ValidateIf,
 } from 'class-validator';
 
 export class CreateProductDTO {
@@ -54,3 +57,21 @@ export class CreateProductDTO {
 export class UpdateProductDTO extends PartialType(
   OmitType(CreateProductDTO, ['nombre']),
 ) {}
+
+export class FilterProductsDTO {
+  @IsOptional()
+  @IsPositive()
+  readonly limit: number;
+
+  @IsOptional()
+  @Min(0)
+  readonly offset: number;
+
+  @IsOptional()
+  @IsPositive()
+  readonly precioMinimo: number;
+
+  @ValidateIf((item) => item.precioMinimo)
+  @IsPositive()
+  readonly precioMaximo: number;
+}

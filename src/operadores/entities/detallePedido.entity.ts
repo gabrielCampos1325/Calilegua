@@ -8,18 +8,21 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Pedido } from './pedido.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class DetallePedido {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Exclude()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',

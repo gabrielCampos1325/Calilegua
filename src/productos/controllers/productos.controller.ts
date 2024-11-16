@@ -7,10 +7,12 @@ import {
   Put,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateProductDTO,
+  FilterProductsDTO,
   UpdateProductDTO,
 } from 'src/productos/dtos/products.dto';
 import { ProductosService } from 'src/productos/services/productos.service';
@@ -27,8 +29,8 @@ export class ProductosController {
 
   @ApiOperation({ summary: 'Catalogo de todos los productos' })
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  findAll(@Query() params: FilterProductsDTO) {
+    return this.productsService.findAll(params);
   }
 
   @Post()
