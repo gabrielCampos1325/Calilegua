@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   CreateProductDTO,
+  FilterProductsDTO,
   UpdateProductDTO,
 } from 'src/productos/dtos/products.dto';
 import { Producto } from 'src/productos/entities/producto.entity';
-import { Repository } from 'typeorm';
+import { Between, FindConditions, Repository } from 'typeorm';
 import { FabricantesService } from './fabricantes.service';
 import { Categoria } from '../entities/categoria.entity';
 
@@ -52,7 +53,21 @@ export class ProductosService {
     return product;
   }
 
-  findAll() {
+  findAll(params?: FilterProductsDTO) {
+    if (params) {
+      const where: FindConditions<Producto> = {};
+      const { limit, offset } = params;
+      const { precioMinimo, precioMaximo } = params;
+      if (precioMinimo && precioMaximo) {
+        where.precio = Between(precioMinimo, precioMaximo);
+      }
+      return this.productoRepository.find({
+        relations: ['fabricante', 'categorias'],
+        where,
+        take: limit,
+        skip: offset,
+      });
+    }
     return this.productoRepository.find({
       relations: ['fabricante', 'categorias'],
     });

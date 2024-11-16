@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -9,6 +10,7 @@ import {
 } from 'typeorm';
 import { Fabricante } from './fabricante.entity';
 import { Categoria } from './categoria.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Producto {
@@ -21,6 +23,7 @@ export class Producto {
   @Column({ type: 'text' })
   descripcion: string;
 
+  @Index()
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   precio: number;
 
@@ -33,12 +36,14 @@ export class Producto {
   @Column({ type: 'varchar', length: 255 })
   imagen: string;
 
+  @Exclude()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',

@@ -8,6 +8,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { Producto } from './producto.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Categoria {
@@ -17,12 +18,14 @@ export class Categoria {
   @Column({ type: 'varchar', length: 100, unique: true })
   nombre: string;
 
+  @Exclude()
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
