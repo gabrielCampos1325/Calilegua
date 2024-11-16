@@ -8,12 +8,14 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateCategoriaDTO,
   UpdateCategoriaDTO,
 } from 'src/productos/dtos/categorias.dto';
 import { CategoriasService } from 'src/productos/services/categorias.service';
 
+@ApiTags('Categorias')
 @Controller('categorias')
 export class CategoriasController {
   constructor(private categoriasService: CategoriasService) {}
@@ -23,6 +25,7 @@ export class CategoriasController {
     return this.categoriasService.findOne(id);
   }
 
+  @ApiOperation({ summary: 'Catalogo de todos las categorias' })
   @Get()
   findAll() {
     return this.categoriasService.findAll();

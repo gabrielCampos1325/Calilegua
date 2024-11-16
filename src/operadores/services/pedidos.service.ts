@@ -1,14 +1,25 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import {
   CreatePedidoDTO,
   UpdatePedidoDTO,
 } from 'src/operadores/dtos/pedidos.dto';
 import { Pedido } from 'src/operadores/entities/pedido.entity';
+import { Repository } from 'typeorm';
+import { Comprador } from '../entities/comprador.entity';
 
 @Injectable()
 export class PedidosService {
+  constructor(
+    @InjectRepository(Pedido) private pedidoRepository: Repository<Pedido>,
+    @InjectRepository(Comprador)
+    private compradorRepository: Repository<Comprador>,
+  ) {}
+
+  /*private id = 2;
   private pedidos: Pedido[] = [
     {
+      id: 1,
       date: new Date(),
       operador: {
         id: 1,
@@ -29,9 +40,10 @@ export class PedidosService {
       ],
     },
     {
+      id: 2,
       date: new Date(),
       operador: {
-        id: 1,
+        id: 2,
         email: 'juan@gmail.com',
         password: '123456',
         role: 'role1',
@@ -48,46 +60,45 @@ export class PedidosService {
         },
       ],
     },
-  ];
+  ];*/
 
-  /*findOne(id: number) {
-    const pedido = this.pedidos.find((pedido) => pedido.id === id);
+  async findOne(id: number) {
+    const pedido = await this.pedidoRepository.findOne(id, {
+      relations: ['detalles', 'detalles.producto'],
+    });
     if (!pedido) {
-      throw new Error(`El pedido con id: #${id} no existe`);
+      throw new Error(`Pedido con id ${id} no encontrado`);
     }
     return pedido;
-  }*/
+  }
 
   findAll() {
-    return this.pedidos;
+    return this.pedidoRepository.find();
   }
 
-  create(payload: CreatePedidoDTO) {
-    const newPedido = {
-      ...payload,
-    };
-    this.pedidos.push(newPedido);
-    return newPedido;
+  async create(data: CreatePedidoDTO) {
+    const pedido = new Pedido();
+    if (data.compradorId) {
+      const comprador = await this.compradorRepository.findOne(
+        data.compradorId,
+      );
+      pedido.comprador = comprador;
+    }
+    return this.pedidoRepository.save(pedido);
   }
 
-  /*update(id: number, payload: UpdatePedidoDTO) {
-    const index = this.pedidos.findIndex((pedido) => pedido.id === id);
-    if (index === -1) {
-      throw new Error(`El pedido con id: #${id} no existe`);
+  async update(id: number, changes: UpdatePedidoDTO) {
+    const pedido = await this.pedidoRepository.findOne(id);
+    if (changes.compradorId) {
+      const comprador = await this.compradorRepository.findOne(
+        changes.compradorId,
+      );
+      pedido.comprador = comprador;
     }
-    this.pedidos[index] = {
-      ...this.pedidos[index],
-      ...payload,
-    };
-    return this.pedidos[index];
-  }*/
+    return this.pedidoRepository.save(pedido);
+  }
 
-  /*delete(id: number) {
-    const index = this.pedidos.findIndex((pedido) => pedido.id === id);
-    if (index === -1) {
-      throw new Error(`El pedido con id: #${id} no existe`);
-    }
-    this.pedidos.splice(index, 1);
-    return true;
-  }*/
+  delete(id: number) {
+    return this.pedidoRepository.delete(id);
+  }
 }

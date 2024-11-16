@@ -8,30 +8,38 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateOperadorDTO,
   UpdateOperadorDTO,
 } from 'src/operadores/dtos/operadores.dto';
 import { OperadoresService } from 'src/operadores/services/operadores.service';
 
+@ApiTags('Operadores')
 @Controller('operadores')
 export class OperadoresController {
   constructor(private operadoresService: OperadoresService) {}
+
+  @Get('tasks')
+  getTasks() {
+    return this.operadoresService.getTasks();
+  }
 
   @Get(':id')
   getUserById(@Param('id', ParseIntPipe) id: number) {
     return this.operadoresService.findOne(id);
   }
 
+  @ApiOperation({ summary: 'Catalogo de todos los operadores' })
   @Get()
   findAll() {
     return this.operadoresService.findAll();
   }
 
-  @Get(':id/pedidos')
+  /*@Get(':id/pedidos')
   getOrders(@Param('id', ParseIntPipe) id: number) {
     return this.operadoresService.getOrderByUser(id);
-  }
+  }*/
 
   @Post()
   create(@Body() payload: CreateOperadorDTO) {

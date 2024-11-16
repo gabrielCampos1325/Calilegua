@@ -1,19 +1,11 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
-import { IsNotEmpty } from 'class-validator';
-import { Producto } from 'src/productos/entities/producto.entity';
-import { Operador } from '../entities/operador.entiy';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { IsNotEmpty, IsPositive } from 'class-validator';
 
 export class CreatePedidoDTO {
+  @ApiProperty()
   @IsNotEmpty()
-  readonly date: Date;
-
-  @IsNotEmpty()
-  readonly operador: Operador;
-
-  @IsNotEmpty()
-  readonly products: Producto[];
+  @IsPositive()
+  readonly compradorId: number;
 }
 
-export class UpdatePedidoDTO extends PartialType(
-  OmitType(CreatePedidoDTO, ['date']),
-) {}
+export class UpdatePedidoDTO extends PartialType(CreatePedidoDTO) {}

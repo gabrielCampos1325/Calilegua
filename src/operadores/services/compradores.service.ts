@@ -1,13 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import {
   CreateCompradorDTO,
   UpdateCompradorDTO,
 } from 'src/operadores/dtos/compradores.dto';
 import { Comprador } from 'src/operadores/entities/comprador.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CompradoresService {
-  private idCont = 2;
+  constructor(
+    @InjectRepository(Comprador)
+    private compradorRepository: Repository<Comprador>,
+  ) {}
+
+  /*private idCont = 2;
   private compradores: Comprador[] = [
     {
       id: 1,
@@ -21,10 +28,10 @@ export class CompradoresService {
       apellido: 'Gomez',
       telefono: '987654321',
     },
-  ];
+  ];*/
 
   findOne(id: number) {
-    const comprador = this.compradores.find((comprador) => comprador.id === id);
+    const comprador = this.compradorRepository.findOne({ where: { id } });
     if (!comprador) {
       throw new Error(`El comprador con id: #${id} no existe`);
     }
@@ -32,41 +39,21 @@ export class CompradoresService {
   }
 
   findAll() {
-    return this.compradores;
+    return this.compradorRepository.find();
   }
 
-  create(payload: CreateCompradorDTO) {
-    this.idCont++;
-    const newComprador = {
-      id: this.idCont,
-      ...payload,
-    };
-    this.compradores.push(newComprador);
-    return newComprador;
+  create(data: CreateCompradorDTO) {
+    const newComprador = this.compradorRepository.create(data);
+    return this.compradorRepository.save(newComprador);
   }
 
-  update(id: number, payload: UpdateCompradorDTO) {
-    const index = this.compradores.findIndex(
-      (comprador) => comprador.id === id,
-    );
-    if (index === -1) {
-      throw new Error(`El comprador con id: #${id} no existe`);
-    }
-    this.compradores[index] = {
-      ...this.compradores[index],
-      ...payload,
-    };
-    return this.compradores[index];
+  async update(id: number, changes: UpdateCompradorDTO) {
+    const comprador = await this.compradorRepository.findOne({ where: { id } });
+    this.compradorRepository.merge(comprador, changes);
+    return this.compradorRepository.save(comprador);
   }
 
   delete(id: number) {
-    const index = this.compradores.findIndex(
-      (comprador) => comprador.id === id,
-    );
-    if (index === -1) {
-      throw new Error(`El comprador con id: #${id} no existe`);
-    }
-    this.compradores.splice(index, 1);
-    return true;
+    return this.compradorRepository.delete(id);
   }
 }

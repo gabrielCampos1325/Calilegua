@@ -3,20 +3,26 @@ import {
   Column,
   Entity,
   CreateDateColumn,
+  OneToOne,
   UpdateDateColumn,
-  ManyToMany,
-  JoinTable,
+  JoinColumn,
 } from 'typeorm';
-import { Producto } from './producto.entity';
+import { Comprador } from './comprador.entity';
 import { Exclude } from 'class-transformer';
 
 @Entity()
-export class Categoria {
+export class Operador {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'varchar', length: 100, unique: true })
-  nombre: string;
+  email: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  password: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  role: string;
 
   @Exclude()
   @CreateDateColumn({
@@ -32,7 +38,12 @@ export class Categoria {
   })
   updateAt: Date;
 
-  @ManyToMany(() => Producto, (producto) => producto.categorias)
-  @JoinTable({ name: 'categorias_productos' })
-  productos: Producto[];
+  @OneToOne(() => Comprador, (comprador) => comprador.operador, {
+    nullable: true,
+  })
+  @JoinColumn({ name: 'compradorId' })
+  comprador: Comprador;
+
+  @Column({ name: 'compradorId', nullable: true })
+  compradorId: number;
 }
