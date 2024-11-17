@@ -3,6 +3,7 @@ import { ConfigType } from '@nestjs/config';
 import { Client } from 'pg';
 import config from 'src/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MongoClient } from 'mongodb';
 
 const APIKEY = 'DEV-456';
 const APIKEYPROD = 'PROD-12345';
@@ -67,7 +68,20 @@ client.query('SELECT * FROM tareas', (err, res) => {
       },
       inject: [config.KEY],
     },
+    {
+      provide: 'MONGO',
+      useFactory: async (configService: ConfigType<typeof config>) => {
+        const { connection, user, host, dbName, password, port } =
+          configService.mongo;
+        const uri = `${connection}://${user}:${password}@${host}:${port}/?authSource=admin&readPreference=primary`;
+        const client = new MongoClient(uri);
+        await client.connect();
+        const database = client.db(dbName);
+        return database;
+      },
+      inject: [config.KEY],
+    },
   ],
-  exports: ['APIKEY', 'PG', TypeOrmModule],
+  exports: ['APIKEY', 'PG', 'MONGO', TypeOrmModule],
 })
 export class DatabaseModule {}
